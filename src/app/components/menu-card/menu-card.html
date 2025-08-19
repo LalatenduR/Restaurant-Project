@@ -1,0 +1,61 @@
+<div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col group">
+  <!-- Image -->
+  <div class="w-full h-48 overflow-hidden relative">
+    <img [src]="'assets/images/food/' + item.image"
+         [alt]="item.name"
+         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+    
+    <!-- Top-right badges -->
+    <div class="absolute top-3 right-3 flex space-x-1">
+      <span *ngIf="item.isVegetarian" 
+            class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+        🌱 Veg
+      </span>
+      <span *ngIf="item.isSpicy" 
+            class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+        🌶️ Spicy
+      </span>
+    </div>
+
+    <!-- Top-left category badge -->
+    <div class="absolute top-3 left-3">
+      <span class="bg-black bg-opacity-70 text-white px-3 py-1 rounded-full text-xs font-medium capitalize">
+        {{item.category}}
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="p-5 flex flex-col flex-grow">
+    <div class="flex justify-between items-start mb-3">
+      <h3 class="font-bold text-lg text-gray-800 group-hover:text-orange-500 transition-colors">
+        {{item.name}}
+      </h3>
+      <span class="text-2xl font-bold text-orange-500">\₹{{item.price}}</span>
+    </div>
+
+    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{item.description}}</p>
+
+    <!-- Rating and Time -->
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-1">
+          <span class="text-yellow-400">⭐</span>
+          <span class="text-sm font-medium text-gray-700">{{item.rating}}</span>
+        </div>
+        <div class="flex items-center space-x-1">
+          <span class="text-gray-400">🕒</span>
+          <span class="text-sm text-gray-600">{{item.prepTime}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add to Cart Button -->
+    <button (click)="addToCart.emit(item)"
+            class="mt-auto w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 
+                   text-white px-6 py-3 rounded-lg transform hover:scale-105 transition-all duration-200 
+                   font-medium shadow-md hover:shadow-lg">
+      Add to Cart
+    </button>
+  </div>
+</div>

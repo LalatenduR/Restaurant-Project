@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="container mx-auto px-4">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h1 class="text-5xl font-bold text-gray-800 mb-4">Shopping Cart</h1>
+        <p class="text-gray-600 text-lg">Review your delicious selections before checkout</p>
+    </div>
+
+    <!-- Cart Content -->
+    <div *ngIf="cartService.cartItems().length > 0; else emptyCart" 
+            class="max-w-6xl mx-auto">
+        
+        <!-- Cart Items -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-800">Your Items</h2>
+            <p class="text-gray-600">{{cartService.getItemCount()}} items in cart</p>
+        </div>
+        
+        <div class="space-y-4">
+            <app-cart-item
+            *ngFor="let item of cartService.cartItems(); trackBy: trackByItemId"
+            [item]="item"
+            (quantityChange)="updateQuantity($event.id, $event.quantity)"
+            (removeItem)="removeItem($event)"
+            class="block">
+            </app-cart-item>
+        </div>
+        </div>
+
+        <!-- Order Summary & Checkout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Promo Code Section -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-bold mb-4 text-gray-800">Promo Code</h3>
+            <div class="flex space-x-4">
+                <input type="text" 
+                        placeholder="Enter promo code"
+                        class="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                <button class="bg-orange-500 text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-600 transition-colors duration-200">
+                Apply
+                </button>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Have a discount code? Enter it above to save on your order!</p>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="bg-white rounded-xl shadow-lg p-6 h-fit sticky top-24">
+            <h3 class="text-2xl font-bold mb-6 text-gray-800">Order Summary</h3>
+            
+            <div class="space-y-4 mb-6">
+            <div class="flex justify-between text-gray-600">
+                <span>Subtotal ({{cartService.getItemCount()}} items)</span>
+                <span>\${{cartService.getTotal().toFixed(2)}}</span>
+            </div>
+            
+            <div class="flex justify-between text-gray-600">
+                <span>Delivery Fee</span>
+                <span *ngIf="cartService.getTotal() >= 25; else deliveryFee" class="text-green-600 font-medium">
+                FREE
+                </span>
+                <ng-template #deliveryFee>
+                <span>\$2.99</span>
+                </ng-template>
+            </div>
+            
+            <div class="flex justify-between text-gray-600">
+                <span>Tax (10%)</span>
+                <span>\${{(cartService.getTotal() * 0.1).toFixed(2)}}</span>
+            </div>
+            
+            <div class="flex justify-between text-gray-600" *ngIf="cartService.getTotal() < 25">
+                <span class="text-sm">
+                <span class="text-orange-500 font-medium">\${{(25 - cartService.getTotal()).toFixed(2)}} more</span> for free delivery
+                </span>
+            </div>
+            
+            <hr class="border-gray-200">
+            
+            <div class="flex justify-between text-xl font-bold text-gray-800">
+                <span>Total</span>
+                <span class="text-orange-500">
+                \${{getTotalWithFees().toFixed(2)}}
+                </span>
+            </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+            <button (click)="checkout()"
+                    class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 
+                            rounded-lg font-bold text-lg hover:from-orange-600 hover:to-red-600 
+                            transform hover:scale-105 transition-all duration-300 shadow-lg">
+                🚀 Proceed to Checkout
+            </button>
+            
+            <button routerLink="/menu" 
+                    class="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium 
+                            hover:bg-gray-200 transition-colors duration-200 border border-gray-300">
+                ← Continue Shopping
+            </button>
+            
+            <button (click)="clearCart()"
+                    class="w-full text-red-500 py-2 px-4 rounded-lg font-medium 
+                            hover:bg-red-50 transition-colors duration-200 text-sm">
+                🗑️ Clear Cart
+            </button>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <span>🚚</span>
+                <span>Estimated delivery: 25-35 minutes</span>
+            </div>
+            <div class="flex items-center space-x-2 text-sm text-gray-600 mt-1">
+                <span>📍</span>
+                <span>Delivering to Bhubaneswar, Odisha</span>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Empty Cart State -->
+    <ng-template #emptyCart>
+        <div class="text-center py-20">
+        <div class="text-9xl mb-8 animate-bounce">🛒</div>
+        <h2 class="text-4xl font-bold text-gray-600 mb-4">Your cart feels lonely!</h2>
+        <p class="text-gray-500 text-lg mb-8 max-w-md mx-auto">
+            Don't let it stay empty. Browse our delicious menu and add some tasty items to make it happy.
+        </p>
+        <button routerLink="/menu" 
+                class="bg-gradient-to-r from-orange-500 to-red-500 text-white px-10 py-4 
+                        rounded-full font-bold text-lg hover:from-orange-600 hover:to-red-600 
+                        transform hover:scale-105 transition-all duration-300 shadow-lg">
+            🍽️ Explore Our Menu
+        </button>
+        </div>
+    </ng-template>
+    </div>
+</div>
