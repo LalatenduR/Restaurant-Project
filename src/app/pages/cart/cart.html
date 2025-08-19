@@ -54,7 +54,7 @@
             <div class="space-y-4 mb-6">
             <div class="flex justify-between text-gray-600">
                 <span>Subtotal ({{cartService.getItemCount()}} items)</span>
-                <span>\${{cartService.getTotal().toFixed(2)}}</span>
+                <span>\₹{{cartService.getTotal().toFixed(2)}}</span>
             </div>
             
             <div class="flex justify-between text-gray-600">
@@ -63,18 +63,18 @@
                 FREE
                 </span>
                 <ng-template #deliveryFee>
-                <span>\$2.99</span>
+                <span>\₹2.99</span>
                 </ng-template>
             </div>
             
             <div class="flex justify-between text-gray-600">
                 <span>Tax (10%)</span>
-                <span>\${{(cartService.getTotal() * 0.1).toFixed(2)}}</span>
+                <span>\₹{{(cartService.getTotal() * 0.1).toFixed(2)}}</span>
             </div>
             
             <div class="flex justify-between text-gray-600" *ngIf="cartService.getTotal() < 25">
                 <span class="text-sm">
-                <span class="text-orange-500 font-medium">\${{(25 - cartService.getTotal()).toFixed(2)}} more</span> for free delivery
+                <span class="text-orange-500 font-medium">\₹{{(25 - cartService.getTotal()).toFixed(2)}} more</span> for free delivery
                 </span>
             </div>
             
@@ -83,7 +83,7 @@
             <div class="flex justify-between text-xl font-bold text-gray-800">
                 <span>Total</span>
                 <span class="text-orange-500">
-                \${{getTotalWithFees().toFixed(2)}}
+                \₹{{getTotalWithFees().toFixed(2)}}
                 </span>
             </div>
             </div>
