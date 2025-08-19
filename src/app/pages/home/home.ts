@@ -5,7 +5,7 @@ import { Footer } from '../../components/footer/footer';
 import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,Navbar,Footer,RouterModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })

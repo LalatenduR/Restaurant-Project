@@ -8,7 +8,7 @@ import { Navbar } from '../../components/navbar/navbar';
 
 @Component({
   selector: 'app-menu',
-  imports: [CommonModule, MenuCard,Navbar],
+  imports: [CommonModule, MenuCard],
   templateUrl: './menu.html',
   styleUrls: ['./menu.css']
 })
